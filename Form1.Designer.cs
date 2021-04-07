@@ -32,6 +32,8 @@ namespace CMDB
             this.searchBox = new System.Windows.Forms.TextBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.recordViewBox = new System.Windows.Forms.GroupBox();
+            this.nodeBox = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.openTicketList = new System.Windows.Forms.ListBox();
             this.oSBox = new System.Windows.Forms.TextBox();
@@ -40,7 +42,6 @@ namespace CMDB
             this.label9 = new System.Windows.Forms.Label();
             this.hardDriveBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.processorBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.localtionBox = new System.Windows.Forms.TextBox();
@@ -78,6 +79,7 @@ namespace CMDB
             this.label13 = new System.Windows.Forms.Label();
             this.newTicket = new System.Windows.Forms.Button();
             this.tickSave = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
             this.recordViewBox.SuspendLayout();
             this.ticketGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -103,6 +105,8 @@ namespace CMDB
             // 
             // recordViewBox
             // 
+            this.recordViewBox.Controls.Add(this.nodeBox);
+            this.recordViewBox.Controls.Add(this.label18);
             this.recordViewBox.Controls.Add(this.label11);
             this.recordViewBox.Controls.Add(this.openTicketList);
             this.recordViewBox.Controls.Add(this.oSBox);
@@ -111,7 +115,7 @@ namespace CMDB
             this.recordViewBox.Controls.Add(this.label9);
             this.recordViewBox.Controls.Add(this.hardDriveBox);
             this.recordViewBox.Controls.Add(this.label8);
-            this.recordViewBox.Controls.Add(this.label7);
+            this.recordViewBox.Controls.Add(this.label19);
             this.recordViewBox.Controls.Add(this.processorBox);
             this.recordViewBox.Controls.Add(this.label6);
             this.recordViewBox.Controls.Add(this.localtionBox);
@@ -130,6 +134,22 @@ namespace CMDB
             this.recordViewBox.TabIndex = 3;
             this.recordViewBox.TabStop = false;
             this.recordViewBox.Text = "Asset View";
+            // 
+            // nodeBox
+            // 
+            this.nodeBox.Location = new System.Drawing.Point(82, 58);
+            this.nodeBox.Name = "nodeBox";
+            this.nodeBox.Size = new System.Drawing.Size(124, 23);
+            this.nodeBox.TabIndex = 22;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(37, 60);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(39, 15);
+            this.label18.TabIndex = 21;
+            this.label18.Text = "Node:";
             // 
             // label11
             // 
@@ -197,15 +217,6 @@ namespace CMDB
             this.label8.TabIndex = 13;
             this.label8.Text = "Hard Drive:";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(474, 86);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 15);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Specifications";
-            // 
             // processorBox
             // 
             this.processorBox.Location = new System.Drawing.Point(82, 113);
@@ -224,7 +235,7 @@ namespace CMDB
             // 
             // localtionBox
             // 
-            this.localtionBox.Location = new System.Drawing.Point(82, 50);
+            this.localtionBox.Location = new System.Drawing.Point(334, 57);
             this.localtionBox.Name = "localtionBox";
             this.localtionBox.Size = new System.Drawing.Size(124, 23);
             this.localtionBox.TabIndex = 9;
@@ -232,7 +243,7 @@ namespace CMDB
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(23, 52);
+            this.label5.Location = new System.Drawing.Point(275, 59);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 15);
             this.label5.TabIndex = 8;
@@ -257,7 +268,7 @@ namespace CMDB
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(485, 29);
+            this.label3.Location = new System.Drawing.Point(539, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 15);
             this.label3.TabIndex = 5;
@@ -266,7 +277,7 @@ namespace CMDB
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(234, 58);
+            this.label2.Location = new System.Drawing.Point(496, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(106, 15);
             this.label2.TabIndex = 4;
@@ -275,7 +286,7 @@ namespace CMDB
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(245, 26);
+            this.label1.Location = new System.Drawing.Point(234, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 15);
             this.label1.TabIndex = 3;
@@ -284,7 +295,7 @@ namespace CMDB
             // auditDate
             // 
             this.auditDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.auditDate.Location = new System.Drawing.Point(554, 23);
+            this.auditDate.Location = new System.Drawing.Point(608, 25);
             this.auditDate.Name = "auditDate";
             this.auditDate.Size = new System.Drawing.Size(123, 23);
             this.auditDate.TabIndex = 2;
@@ -292,7 +303,7 @@ namespace CMDB
             // replacementDate
             // 
             this.replacementDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.replacementDate.Location = new System.Drawing.Point(346, 52);
+            this.replacementDate.Location = new System.Drawing.Point(608, 54);
             this.replacementDate.Name = "replacementDate";
             this.replacementDate.Size = new System.Drawing.Size(123, 23);
             this.replacementDate.TabIndex = 1;
@@ -300,7 +311,7 @@ namespace CMDB
             // installationDate
             // 
             this.installationDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.installationDate.Location = new System.Drawing.Point(346, 23);
+            this.installationDate.Location = new System.Drawing.Point(335, 25);
             this.installationDate.Name = "installationDate";
             this.installationDate.Size = new System.Drawing.Size(123, 23);
             this.installationDate.TabIndex = 0;
@@ -552,6 +563,15 @@ namespace CMDB
             this.tickSave.UseVisualStyleBackColor = true;
             this.tickSave.Click += new System.EventHandler(this.tickSave_Click);
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(407, 86);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(80, 15);
+            this.label19.TabIndex = 12;
+            this.label19.Text = "Specifications";
+            // 
             // CMBD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -601,7 +621,6 @@ namespace CMDB
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox assetTagBox;
         private System.Windows.Forms.DateTimePicker auditDate;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox processor;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox oSBox;
@@ -644,6 +663,10 @@ namespace CMDB
         private System.Windows.Forms.RichTextBox tickNotes;
         private System.Windows.Forms.RichTextBox tickDisc;
         private System.Windows.Forms.Button tickSave;
+        private System.Windows.Forms.TextBox nodeBox;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox d;
+        private System.Windows.Forms.Label label19;
     }
 }
 
