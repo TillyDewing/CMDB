@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace CMDB
 {
@@ -22,7 +23,19 @@ namespace CMDB
             string cs = @"server=" + server + ";userid=" + userid + "; password=" + password + ";database=" + database;
 
             con = new MySqlConnection(cs);
-            con.Open();
+            
+            try
+            {
+                con.Open();
+            }
+            catch (MySqlException)
+            {
+                string message = "Unable to connect to SQL database. Check server is up and running.";
+                string caption = "Error: Unable to connect to SQL Server";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
+                return;
+            }
 
             cmd = new MySqlCommand();
             cmd.Connection = con;
@@ -43,20 +56,36 @@ namespace CMDB
             }
         }
 
-        public static void NewTicket(int prioriy, int state, int asset, string name, string phone, string email, string desc, string notes)
-        { 
-            cmd.CommandText = "INSERT INTO tickets(state, phone, name, email, priority, notes, description, asset) VALUES ('" + state + "','" + name + "','" + email + "','" + prioriy + "','" + notes + "','" + desc + "','" + asset +"','" + DateTime.Now.ToString("yyyy-MM-dd") + "')";
-            cmd.ExecuteNonQuery();
-        }
-
-        public static void NewTicket(Ticket ticket)
+        public static void NewTicket(int priority, int state, int asset, string name, string phone, string email, string desc, string notes)
         {
-            NewTicket(ticket.prioriy, ticket.state, ticket.asset, ticket.name, ticket.phone, ticket.email, ticket.desc, ticket.notes);
+            Ticket.prioriy = priority;
+            Ticket.asset = asset;
+            Ticket.state = state;
+            Ticket.name = name;
+            Ticket.phone = phone;
+            Ticket.email = email;
+            Ticket.desc = desc;
+            Ticket.notes = notes;
+
+            cmd.CommandText = "INSERT INTO tickets(state, phone, name, email, priority, notes, description, asset) VALUES ('" + state + "','" + name + "','" + email + "','" + priority + "','" + notes + "','" + desc + "','" + asset +"','" + DateTime.Now.ToString("yyyy-MM-dd") + "')";
+            cmd.ExecuteNonQuery();
         }
 
         public static void NewAsset(string node, string os, string hardDrive, string ram, string processor, string location, DateTime installDate, DateTime upgradeDate, DateTime auditDate)
         { 
             cmd.CommandText = "INSERT INTO assets(node,os,hardDrive,ram,processor,location,installDate,upgradeDate,auditDate) VALUES('" + node + "','" + os + "','" + hardDrive + "','" + ram + "','" + processor + "','" + location + "','" + installDate.ToString("yyyy-MM-dd") + "','" + upgradeDate.ToString("yyyy-MM-dd") + "','" + auditDate.ToString("yyyy-MM-dd") + "')";
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateAsset(int assetTag, string node, string os, string hardDrive, string ram, string processor, string location, DateTime installDate, DateTime upgradeDate, DateTime auditDate)
+        {
+            cmd.CommandText = "UPDATE assets Set node=" + node + ",os=" + os + ",hardDrive=" + hardDrive + ",ram=" + ram + ",processor=" + processor + ",location=" + location + ",installDate=" + installDate.ToString("yyyy-MM-dd") + ",upgradeDate=" + upgradeDate.ToString("yyyy-MM-dd") + ",auditDate=" + auditDate.ToString("yyyy-MM-dd") + " WHERE tagNum=" + assetTag;
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateTicket(int ticketNum, int priority, int state, int asset, string name, string phone, string email, string desc, string notes)
+        {
+            cmd.CommandText = "UPDATE tickets Set state=" + state + ",phone=" + phone + ",email=" + email + ",priority=" + priority + ",notes=" + notes + ",description=" + desc + " WHERE tickNum=" + ticketNum;
             cmd.ExecuteNonQuery();
         }
 
@@ -74,11 +103,12 @@ namespace CMDB
                 Asset.hardDrive = rdr.GetString(3);
                 Asset.ram = rdr.GetString(4);
                 Asset.processor = rdr.GetString(5);
-                //Asset.installDate = rdr.GetDateTime(6);
-                //Asset.upgradeDate = rdr.GetDateTime(7);
-                //Asset.auditDate = rdr.GetDateTime(8);
-                
-                
+                Asset.location = rdr.GetString(6);
+                Asset.installDate = rdr.GetDateTime(7);
+                Asset.upgradeDate = rdr.GetDateTime(8);
+                Asset.auditDate = rdr.GetDateTime(9);
+
+
             }
             else
             { 
@@ -88,10 +118,52 @@ namespace CMDB
             rdr.Close();
         }
 
-        public static Ticket GetTicket(int tickNum)
+        public static void GetTicket(int tickNum)
         {
-            return null;
+            cmd.CommandText = "SELECT * FROM tickets WHERE tagNum=" + tickNum;
+            rdr = cmd.ExecuteReader();
+
+            if (rdr.HasRows)
+            {
+                rdr.Read();
+
+                Ticket.ticketNum = rdr.GetInt32(0);
+                Ticket.state = rdr.GetInt32(1);
+                Ticket.phone = rdr.GetString(2);
+                Ticket.name = rdr.GetString(3);
+                Ticket.email = rdr.GetString(4);
+                Ticket.prioriy = rdr.GetInt32(5);
+                Ticket.notes = rdr.GetString(6);
+                Ticket.desc = rdr.GetString(7);
+                Ticket.asset = rdr.GetInt32(8);
+                Ticket.createdDate = rdr.GetDateTime(9);
+
+            }
+            else
+            { 
+                //No ticket found
+            }
+
         }
+
+        public static void GetOpenTicketNums()
+        {
+            Asset.openTickets = new List<int>();
+            int asset = Asset.tagNum;
+
+            cmd.CommandText = "SELECT tickNum From tickets Where asset=" + asset + " AND state=0";
+
+            rdr = cmd.ExecuteReader();
+
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    Asset.openTickets.Add(rdr.GetInt32(0));
+                }
+            }
+        }
+
     }
 
 }

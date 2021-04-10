@@ -42,6 +42,7 @@ namespace CMDB
             this.label9 = new System.Windows.Forms.Label();
             this.hardDriveBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.processorBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.localtionBox = new System.Windows.Forms.TextBox();
@@ -79,14 +80,17 @@ namespace CMDB
             this.label13 = new System.Windows.Forms.Label();
             this.newTicket = new System.Windows.Forms.Button();
             this.tickSave = new System.Windows.Forms.Button();
-            this.label19 = new System.Windows.Forms.Label();
+            this.tickSearchBut = new System.Windows.Forms.Button();
+            this.tickSearchBox = new System.Windows.Forms.TextBox();
+            this.tickAssetBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.recordViewBox.SuspendLayout();
             this.ticketGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(1072, 12);
+            this.searchBox.Location = new System.Drawing.Point(802, 13);
             this.searchBox.Name = "searchBox";
             this.searchBox.PlaceholderText = "asset tag #";
             this.searchBox.Size = new System.Drawing.Size(213, 23);
@@ -95,7 +99,7 @@ namespace CMDB
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(1291, 12);
+            this.searchButton.Location = new System.Drawing.Point(1021, 13);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(32, 23);
             this.searchButton.TabIndex = 1;
@@ -217,6 +221,15 @@ namespace CMDB
             this.label8.TabIndex = 13;
             this.label8.Text = "Hard Drive:";
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(407, 86);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(80, 15);
+            this.label19.TabIndex = 12;
+            this.label19.Text = "Specifications";
+            // 
             // processorBox
             // 
             this.processorBox.Location = new System.Drawing.Point(82, 113);
@@ -329,7 +342,7 @@ namespace CMDB
             // 
             // replaceSearchBut
             // 
-            this.replaceSearchBut.Location = new System.Drawing.Point(1072, 41);
+            this.replaceSearchBut.Location = new System.Drawing.Point(1072, 13);
             this.replaceSearchBut.Name = "replaceSearchBut";
             this.replaceSearchBut.Size = new System.Drawing.Size(128, 23);
             this.replaceSearchBut.TabIndex = 5;
@@ -338,7 +351,7 @@ namespace CMDB
             // 
             // auditBut
             // 
-            this.auditBut.Location = new System.Drawing.Point(1206, 41);
+            this.auditBut.Location = new System.Drawing.Point(1206, 13);
             this.auditBut.Name = "auditBut";
             this.auditBut.Size = new System.Drawing.Size(117, 23);
             this.auditBut.TabIndex = 6;
@@ -380,13 +393,15 @@ namespace CMDB
             // 
             this.searchResults.FormattingEnabled = true;
             this.searchResults.ItemHeight = 15;
-            this.searchResults.Location = new System.Drawing.Point(1072, 75);
+            this.searchResults.Location = new System.Drawing.Point(1072, 45);
             this.searchResults.Name = "searchResults";
-            this.searchResults.Size = new System.Drawing.Size(251, 619);
+            this.searchResults.Size = new System.Drawing.Size(251, 649);
             this.searchResults.TabIndex = 9;
             // 
             // ticketGroupBox
             // 
+            this.ticketGroupBox.Controls.Add(this.tickAssetBox);
+            this.ticketGroupBox.Controls.Add(this.label7);
             this.ticketGroupBox.Controls.Add(this.tickClose);
             this.ticketGroupBox.Controls.Add(this.label17);
             this.ticketGroupBox.Controls.Add(this.label16);
@@ -563,20 +578,47 @@ namespace CMDB
             this.tickSave.UseVisualStyleBackColor = true;
             this.tickSave.Click += new System.EventHandler(this.tickSave_Click);
             // 
-            // label19
+            // tickSearchBut
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(407, 86);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(80, 15);
-            this.label19.TabIndex = 12;
-            this.label19.Text = "Specifications";
+            this.tickSearchBut.Location = new System.Drawing.Point(1021, 217);
+            this.tickSearchBut.Name = "tickSearchBut";
+            this.tickSearchBut.Size = new System.Drawing.Size(32, 23);
+            this.tickSearchBut.TabIndex = 14;
+            this.tickSearchBut.Text = "🔍";
+            this.tickSearchBut.UseVisualStyleBackColor = true;
+            // 
+            // tickSearchBox
+            // 
+            this.tickSearchBox.Location = new System.Drawing.Point(802, 217);
+            this.tickSearchBox.Name = "tickSearchBox";
+            this.tickSearchBox.PlaceholderText = "ticket number #";
+            this.tickSearchBox.Size = new System.Drawing.Size(213, 23);
+            this.tickSearchBox.TabIndex = 13;
+            this.tickSearchBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // tickAssetBox
+            // 
+            this.tickAssetBox.Location = new System.Drawing.Point(714, 48);
+            this.tickAssetBox.Name = "tickAssetBox";
+            this.tickAssetBox.Size = new System.Drawing.Size(181, 23);
+            this.tickAssetBox.TabIndex = 38;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(610, 51);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(98, 15);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "Associated Asset:";
             // 
             // CMBD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1339, 710);
+            this.Controls.Add(this.tickSearchBut);
+            this.Controls.Add(this.tickSearchBox);
             this.Controls.Add(this.newTicket);
             this.Controls.Add(this.ticketGroupBox);
             this.Controls.Add(this.tickSave);
@@ -667,6 +709,10 @@ namespace CMDB
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox d;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button tickSearchBut;
+        private System.Windows.Forms.TextBox tickSearchBox;
+        private System.Windows.Forms.TextBox tickAssetBox;
+        private System.Windows.Forms.Label label7;
     }
 }
 

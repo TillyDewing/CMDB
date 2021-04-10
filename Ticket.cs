@@ -4,20 +4,19 @@ using System.Text;
 
 namespace CMDB
 {
-    class Ticket
+    class Ticket //Container for active ticket.
     {
-        public int ticketNum;
-        public int prioriy;
-        public int state;
-        public int asset;
+        public static int ticketNum;
+        public static int prioriy;
+        public static int state;
+        public static int asset;
 
-        public string name;
-        public string phone;
-        public string email;
-        public string desc;
-        public string notes;
+        public static string name;
+        public static string phone;
+        public static string email;
+        public static string desc;
+        public static string notes;
 
-        public DateTime createdDate;
-
+        public static DateTime createdDate;
     }
 }

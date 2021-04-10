@@ -6,7 +6,7 @@ namespace CMDB
 {
     class Search
     {
-        private List<int> searchResults;
+        private static List<int> searchResults;
 
        
     }
