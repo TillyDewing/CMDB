@@ -15,13 +15,14 @@ namespace CMDB
         public CMBD()
         {
             InitializeComponent();
-            SqlConnection.InitializeDatabase();
+            GetSQLLogin();
+            //SqlConnection.InitializeDatabase();
 
         }
 
         public void UpdateAssetView()
         {
-            assetTagBox.Text = Asset.tagNum.ToString();
+            recordViewBox.Text = Asset.tagNum.ToString().PadLeft(6, '0');
             localtionBox.Text = Asset.location;
             nodeBox.Text = Asset.node;
 
@@ -36,58 +37,68 @@ namespace CMDB
 
             SqlConnection.GetOpenTicketNums(); //Get list of open tickets assosiated with tag.
             openTicketList.Items.Clear();
+
             foreach (int t in Asset.openTickets)
             {
-                openTicketList.Items.Add(t);
+                openTicketList.Items.Add(t.ToString().PadLeft(6, '0'));
             }
+        }
+
+        private void UpdateTicketView()
+        {
+            tickAssetBox.Text = Ticket.asset.ToString().PadLeft(6,'0');
+            tickClientEmailBox.Text = Ticket.email;
+            tickClientNameBox.Text = Ticket.name;
+            tickClientPhone.Text = Ticket.phone;
+            tickDateCreated.Value = Ticket.createdDate;
+            tickDisc.Text = Ticket.desc;
+            tickNotes.Text = Ticket.notes;
+            tickPriority.SelectedItem = Ticket.prioriy;
+
+            SetTicketState(Ticket.ticketNum, Ticket.state);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            int assetTag = 0;
-
-            if (int.TryParse(assetTagBox.Text, out assetTag))
-            {
-                SqlConnection.UpdateAsset(assetTag, nodeBox.Text, oSBox.Text, hardDriveBox.Text, ramBox.Text, processorBox.Text, localtionBox.Text, installationDate.Value, replacementDate.Value, auditDate.Value);
-                Asset.node = nodeBox.Text;
-            }
+            SqlConnection.UpdateAsset(Asset.tagNum, nodeBox.Text, oSBox.Text, hardDriveBox.Text, ramBox.Text, processorBox.Text, localtionBox.Text, installationDate.Value, replacementDate.Value, auditDate.Value);
 
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
-        {
-            if(searchBox.TextLength != 0)
-            {
-                SqlConnection.GetAsset(Int32.Parse(searchBox.Text));
-                UpdateAssetView();
-                
-            }
 
-        }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
+            SqlConnection.DeleteAsset(Asset.tagNum);
+            Asset.Clear();
+            UpdateAssetView();
 
         }
 
         private void newButton_Click(object sender, EventArgs e)
         {
-            SqlConnection.NewAsset(nodeBox.Text, oSBox.Text, hardDriveBox.Text, ramBox.Text, processorBox.Text, localtionBox.Text, installationDate.Value, replacementDate.Value, auditDate.Value);
+            Asset.Clear();
+            SqlConnection.NewAsset();
+            UpdateAssetView();
         }
 
         private void tickSave_Click(object sender, EventArgs e)
         {
-            SqlConnection.UpdateTicket(Ticket.ticketNum, tickPriority.SelectedIndex, 0, Asset.tagNum, tickClientNameBox.Text, tickClientPhone.Text, tickClientEmailBox.Text, tickDisc.Text, tickNotes.Text);
+            int.TryParse(tickAssetBox.Text, out int assetTag);
+
+            SqlConnection.UpdateTicket(Ticket.ticketNum, tickPriority.SelectedIndex, 0, assetTag, tickClientNameBox.Text, tickClientPhone.Text, tickClientEmailBox.Text, tickDisc.Text, tickNotes.Text);
         }
 
         private void newTicket_Click(object sender, EventArgs e)
         {
-            SqlConnection.NewTicket(tickPriority.SelectedIndex, 0, Asset.tagNum, tickClientNameBox.Text, tickClientPhone.Text, tickClientEmailBox.Text, tickDisc.Text, tickNotes.Text);
+            Ticket.Clear();
+            SqlConnection.NewTicket();
+            UpdateTicketView();
         }
 
         private void tickClose_Click(object sender, EventArgs e)
         {
-
+            SqlConnection.UpdateTicket(Ticket.ticketNum, tickPriority.SelectedIndex, 1, Asset.tagNum, tickClientNameBox.Text, tickClientPhone.Text, tickClientEmailBox.Text, tickDisc.Text, tickNotes.Text);
+            UpdateTicketView();
         }
 
         private void SetTicketState(int tickNum, int state)
@@ -107,7 +118,105 @@ namespace CMDB
                     break;
             }
 
-            ticketGroupBox.Text = tickNum + " | " + stateText;
+            ticketGroupBox.Text = tickNum.ToString().PadLeft(6, '0') + " | " + stateText;
+        }
+        private void searchButton_Click(object sender, EventArgs e) //Asset Search
+        {
+            int.TryParse(searchBox.Text, out int assetNum);
+
+            if (assetNum != 0)
+            {
+
+                if (SqlConnection.GetAsset(assetNum))
+                {
+                    UpdateAssetView();
+                }
+                else
+                {
+                    recordViewBox.Text = "Error: Not Found";
+                }
+            }
+            else 
+            {
+                recordViewBox.Text = "Error: Invalid";
+            }
+
+        }
+
+        private void tickSearchBut_Click(object sender, EventArgs e) //Search button for tickets updates ticket veiw with entered ticket if found.
+        {  
+            int.TryParse(tickSearchBox.Text, out int tickNum);
+
+            if (tickNum != 0)
+            {
+                if (SqlConnection.GetTicket(tickNum))
+                {
+                    UpdateTicketView();
+                }
+                else
+                {
+                    Ticket.Clear();
+                    UpdateTicketView();
+                    ticketGroupBox.Text = "Error: No ticket found";
+                }
+            }
+            else 
+            {
+                Ticket.Clear();
+                UpdateTicketView();
+                ticketGroupBox.Text = "Error: Invalid input";
+            }
+        }
+
+        private void GetSQLLogin()
+        {
+            Login loginDialog = new Login();
+            bool loggedIN = false;
+
+            while (!loggedIN)
+            {
+                if (loginDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    //string user = Login.username;
+                    //string pass = Login.password;
+
+                    string user = "CMBD";
+                    string pass = "password";
+
+                    if (SqlConnection.AttemptSQLConnection(user, pass))
+                    {
+                        loginDialog.Dispose();
+                        loggedIN = true;
+                    }
+                }
+                else
+                {
+                    loginDialog.Dispose();
+                    loggedIN = true; //Ensure loop is broken. probs unnessesary 
+                }
+            }
+            
+        } //Login screen at begining of program
+
+        private void replaceSearchBut_Click(object sender, EventArgs e)
+        {
+            searchResults.Items.Clear();
+
+            foreach (string result in SqlConnection.GetReplacementList())
+            {
+                searchResults.Items.Add(result);
+            }
+        }
+
+        private void auditBut_Click(object sender, EventArgs e)
+        {
+            searchResults.Items.Clear();
+
+            foreach (string result in SqlConnection.GetAuditList())
+            {
+                searchResults.Items.Add(result);
+            }
+
         }
     }
 }

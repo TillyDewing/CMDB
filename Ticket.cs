@@ -18,5 +18,21 @@ namespace CMDB
         public static string notes;
 
         public static DateTime createdDate;
+
+        public static void Clear()
+        {
+            ticketNum = 0;
+            prioriy = 0;
+            state = 0;
+            asset = 0;
+
+            name = "";
+            phone = "";
+            email = "";
+            desc = "";
+            notes = "";
+
+            createdDate = DateTime.Now;
+        }
     }
 }

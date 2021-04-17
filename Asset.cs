@@ -20,5 +20,20 @@ namespace CMDB
         public static string os;
 
         public static List<int> openTickets;
+
+        public static void Clear()
+        {
+            tagNum = 0;
+            node = "";
+            location = "";
+            installDate = DateTime.Now;
+            upgradeDate = DateTime.Now;
+            auditDate = DateTime.Now;
+            processor = "";
+            hardDrive = "";
+            ram = "";
+            os = "";
+
+        }
     }
 }

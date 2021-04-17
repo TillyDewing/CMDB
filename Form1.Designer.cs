@@ -47,8 +47,6 @@ namespace CMDB
             this.label6 = new System.Windows.Forms.Label();
             this.localtionBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.assetTagBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -63,6 +61,8 @@ namespace CMDB
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.searchResults = new System.Windows.Forms.ListBox();
             this.ticketGroupBox = new System.Windows.Forms.GroupBox();
+            this.tickAssetBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tickClose = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -82,8 +82,6 @@ namespace CMDB
             this.tickSave = new System.Windows.Forms.Button();
             this.tickSearchBut = new System.Windows.Forms.Button();
             this.tickSearchBox = new System.Windows.Forms.TextBox();
-            this.tickAssetBox = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.recordViewBox.SuspendLayout();
             this.ticketGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -124,8 +122,6 @@ namespace CMDB
             this.recordViewBox.Controls.Add(this.label6);
             this.recordViewBox.Controls.Add(this.localtionBox);
             this.recordViewBox.Controls.Add(this.label5);
-            this.recordViewBox.Controls.Add(this.assetTagBox);
-            this.recordViewBox.Controls.Add(this.label4);
             this.recordViewBox.Controls.Add(this.label3);
             this.recordViewBox.Controls.Add(this.label2);
             this.recordViewBox.Controls.Add(this.label1);
@@ -141,7 +137,7 @@ namespace CMDB
             // 
             // nodeBox
             // 
-            this.nodeBox.Location = new System.Drawing.Point(82, 58);
+            this.nodeBox.Location = new System.Drawing.Point(82, 25);
             this.nodeBox.Name = "nodeBox";
             this.nodeBox.Size = new System.Drawing.Size(124, 23);
             this.nodeBox.TabIndex = 22;
@@ -149,7 +145,7 @@ namespace CMDB
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(37, 60);
+            this.label18.Location = new System.Drawing.Point(37, 27);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(39, 15);
             this.label18.TabIndex = 21;
@@ -175,7 +171,7 @@ namespace CMDB
             // 
             // oSBox
             // 
-            this.oSBox.Location = new System.Drawing.Point(648, 113);
+            this.oSBox.Location = new System.Drawing.Point(648, 126);
             this.oSBox.Name = "oSBox";
             this.oSBox.Size = new System.Drawing.Size(118, 23);
             this.oSBox.TabIndex = 18;
@@ -183,7 +179,7 @@ namespace CMDB
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(608, 116);
+            this.label10.Location = new System.Drawing.Point(608, 129);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(34, 15);
             this.label10.TabIndex = 17;
@@ -191,7 +187,7 @@ namespace CMDB
             // 
             // ramBox
             // 
-            this.ramBox.Location = new System.Drawing.Point(473, 113);
+            this.ramBox.Location = new System.Drawing.Point(473, 126);
             this.ramBox.Name = "ramBox";
             this.ramBox.Size = new System.Drawing.Size(124, 23);
             this.ramBox.TabIndex = 16;
@@ -199,7 +195,7 @@ namespace CMDB
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(434, 116);
+            this.label9.Location = new System.Drawing.Point(434, 129);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(34, 15);
             this.label9.TabIndex = 15;
@@ -207,7 +203,7 @@ namespace CMDB
             // 
             // hardDriveBox
             // 
-            this.hardDriveBox.Location = new System.Drawing.Point(289, 113);
+            this.hardDriveBox.Location = new System.Drawing.Point(289, 126);
             this.hardDriveBox.Name = "hardDriveBox";
             this.hardDriveBox.Size = new System.Drawing.Size(124, 23);
             this.hardDriveBox.TabIndex = 14;
@@ -215,7 +211,7 @@ namespace CMDB
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(217, 116);
+            this.label8.Location = new System.Drawing.Point(217, 129);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(66, 15);
             this.label8.TabIndex = 13;
@@ -224,7 +220,7 @@ namespace CMDB
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(407, 86);
+            this.label19.Location = new System.Drawing.Point(409, 94);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(80, 15);
             this.label19.TabIndex = 12;
@@ -232,7 +228,7 @@ namespace CMDB
             // 
             // processorBox
             // 
-            this.processorBox.Location = new System.Drawing.Point(82, 113);
+            this.processorBox.Location = new System.Drawing.Point(82, 126);
             this.processorBox.Name = "processorBox";
             this.processorBox.Size = new System.Drawing.Size(124, 23);
             this.processorBox.TabIndex = 11;
@@ -240,7 +236,7 @@ namespace CMDB
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 116);
+            this.label6.Location = new System.Drawing.Point(18, 129);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(61, 15);
             this.label6.TabIndex = 10;
@@ -261,22 +257,6 @@ namespace CMDB
             this.label5.Size = new System.Drawing.Size(53, 15);
             this.label5.TabIndex = 8;
             this.label5.Text = "Location";
-            // 
-            // assetTagBox
-            // 
-            this.assetTagBox.Location = new System.Drawing.Point(82, 23);
-            this.assetTagBox.Name = "assetTagBox";
-            this.assetTagBox.Size = new System.Drawing.Size(124, 23);
-            this.assetTagBox.TabIndex = 7;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 26);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 15);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Asset Tag:";
             // 
             // label3
             // 
@@ -348,6 +328,7 @@ namespace CMDB
             this.replaceSearchBut.TabIndex = 5;
             this.replaceSearchBut.Text = "Replacements";
             this.replaceSearchBut.UseVisualStyleBackColor = true;
+            this.replaceSearchBut.Click += new System.EventHandler(this.replaceSearchBut_Click);
             // 
             // auditBut
             // 
@@ -357,6 +338,7 @@ namespace CMDB
             this.auditBut.TabIndex = 6;
             this.auditBut.Text = "Audit";
             this.auditBut.UseVisualStyleBackColor = true;
+            this.auditBut.Click += new System.EventHandler(this.auditBut_Click);
             // 
             // deleteButton
             // 
@@ -423,6 +405,22 @@ namespace CMDB
             this.ticketGroupBox.TabIndex = 10;
             this.ticketGroupBox.TabStop = false;
             this.ticketGroupBox.Text = "ticketnum";
+            // 
+            // tickAssetBox
+            // 
+            this.tickAssetBox.Location = new System.Drawing.Point(714, 48);
+            this.tickAssetBox.Name = "tickAssetBox";
+            this.tickAssetBox.Size = new System.Drawing.Size(181, 23);
+            this.tickAssetBox.TabIndex = 38;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(610, 51);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(98, 15);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "Associated Asset:";
             // 
             // tickClose
             // 
@@ -586,6 +584,7 @@ namespace CMDB
             this.tickSearchBut.TabIndex = 14;
             this.tickSearchBut.Text = "🔍";
             this.tickSearchBut.UseVisualStyleBackColor = true;
+            this.tickSearchBut.Click += new System.EventHandler(this.tickSearchBut_Click);
             // 
             // tickSearchBox
             // 
@@ -595,22 +594,6 @@ namespace CMDB
             this.tickSearchBox.Size = new System.Drawing.Size(213, 23);
             this.tickSearchBox.TabIndex = 13;
             this.tickSearchBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // tickAssetBox
-            // 
-            this.tickAssetBox.Location = new System.Drawing.Point(714, 48);
-            this.tickAssetBox.Name = "tickAssetBox";
-            this.tickAssetBox.Size = new System.Drawing.Size(181, 23);
-            this.tickAssetBox.TabIndex = 38;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(610, 51);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(98, 15);
-            this.label7.TabIndex = 37;
-            this.label7.Text = "Associated Asset:";
             // 
             // CMBD
             // 
@@ -652,7 +635,6 @@ namespace CMDB
         private System.Windows.Forms.Button auditBut;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button newButton;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -661,7 +643,6 @@ namespace CMDB
         private System.Windows.Forms.DateTimePicker installationDate;
         private System.Windows.Forms.TextBox localtionBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox assetTagBox;
         private System.Windows.Forms.DateTimePicker auditDate;
         private System.Windows.Forms.TextBox processor;
         private System.Windows.Forms.Label label6;

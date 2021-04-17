@@ -20,22 +20,6 @@ namespace CMDB
 
         public static void InitializeDatabase()
         {
-            string cs = @"server=" + server + ";userid=" + userid + "; password=" + password + ";database=" + database;
-
-            con = new MySqlConnection(cs);
-            
-            try
-            {
-                con.Open();
-            }
-            catch (MySqlException)
-            {
-                string message = "Unable to connect to SQL database. Check server is up and running.";
-                string caption = "Error: Unable to connect to SQL Server";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                MessageBox.Show(message, caption, buttons);
-                return;
-            }
 
             cmd = new MySqlCommand();
             cmd.Connection = con;
@@ -48,6 +32,30 @@ namespace CMDB
             
         }
 
+        public static bool AttemptSQLConnection(string username, string password)
+        {
+            string cs = @"server=" + server + ";userid=" + username + "; password=" + password + ";database=" + database;
+
+            con = new MySqlConnection(cs);
+
+            try
+            {
+                con.Open();
+                InitializeDatabase();
+
+                return true;
+            }
+            catch (MySqlException)
+            {
+                string message = "Unable to connect to SQL database. Check login information and server status.";
+                string caption = "Error: Unable to connect to SQL Server";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                MessageBox.Show(message, caption, buttons);
+                return false;
+            }
+
+        }
+
         public static void CloseConnection()
         {
             if (con != null)
@@ -56,40 +64,54 @@ namespace CMDB
             }
         }
 
-        public static void NewTicket(int priority, int state, int asset, string name, string phone, string email, string desc, string notes)
+        public static void NewTicket()
         {
-            Ticket.prioriy = priority;
-            Ticket.asset = asset;
-            Ticket.state = state;
-            Ticket.name = name;
-            Ticket.phone = phone;
-            Ticket.email = email;
-            Ticket.desc = desc;
-            Ticket.notes = notes;
 
-            cmd.CommandText = "INSERT INTO tickets(state, phone, name, email, priority, notes, description, asset) VALUES ('" + state + "','" + name + "','" + email + "','" + priority + "','" + notes + "','" + desc + "','" + asset +"','" + DateTime.Now.ToString("yyyy-MM-dd") + "')";
+            int priority = 0;
+            int state = 0;
+            int asset = 0;
+            string name = "name";
+            string phone = "phone";
+            string email = "email";
+            string desc = "description";
+            string notes = "Notes";
+
+            cmd.CommandText = "INSERT INTO tickets(state, phone, name, email, priority, notes, description, asset, createdDate) VALUES ('" + state + "','" + phone + "','" + name + "','" + email + "','" + priority + "','" + notes + "','" + desc + "','" + asset +"','" + DateTime.Now.ToString("yyyy-MM-dd") + "')";
             cmd.ExecuteNonQuery();
+            GetLatestTicketNum();
+
         }
 
-        public static void NewAsset(string node, string os, string hardDrive, string ram, string processor, string location, DateTime installDate, DateTime upgradeDate, DateTime auditDate)
-        { 
+        public static void NewAsset()
+        {
+            string node = "node";
+            string os = "os";
+            string hardDrive = "harddrive";
+            string ram = "ram";
+            string processor = "processor";
+            string location = "location";
+            DateTime installDate = DateTime.Now;
+            DateTime upgradeDate = DateTime.Now;
+            DateTime auditDate = DateTime.Now;
+
             cmd.CommandText = "INSERT INTO assets(node,os,hardDrive,ram,processor,location,installDate,upgradeDate,auditDate) VALUES('" + node + "','" + os + "','" + hardDrive + "','" + ram + "','" + processor + "','" + location + "','" + installDate.ToString("yyyy-MM-dd") + "','" + upgradeDate.ToString("yyyy-MM-dd") + "','" + auditDate.ToString("yyyy-MM-dd") + "')";
             cmd.ExecuteNonQuery();
+            GetLatestAssetNum();
         }
 
         public static void UpdateAsset(int assetTag, string node, string os, string hardDrive, string ram, string processor, string location, DateTime installDate, DateTime upgradeDate, DateTime auditDate)
         {
-            cmd.CommandText = "UPDATE assets Set node=" + node + ",os=" + os + ",hardDrive=" + hardDrive + ",ram=" + ram + ",processor=" + processor + ",location=" + location + ",installDate=" + installDate.ToString("yyyy-MM-dd") + ",upgradeDate=" + upgradeDate.ToString("yyyy-MM-dd") + ",auditDate=" + auditDate.ToString("yyyy-MM-dd") + " WHERE tagNum=" + assetTag;
+            cmd.CommandText = "UPDATE assets Set node='" + node + "',os='" + os + "',hardDrive='" + hardDrive + "',ram='" + ram + "',processor='" + processor + "',location='" + location + "',installDate='" + installDate.ToString("yyyy-MM-dd") + "',upgradeDate='" + upgradeDate.ToString("yyyy-MM-dd") + "',auditDate='" + auditDate.ToString("yyyy-MM-dd") + "' WHERE tagNum=" + assetTag;
             cmd.ExecuteNonQuery();
         }
 
         public static void UpdateTicket(int ticketNum, int priority, int state, int asset, string name, string phone, string email, string desc, string notes)
         {
-            cmd.CommandText = "UPDATE tickets Set state=" + state + ",phone=" + phone + ",email=" + email + ",priority=" + priority + ",notes=" + notes + ",description=" + desc + " WHERE tickNum=" + ticketNum;
+            cmd.CommandText = "UPDATE tickets Set asset=" + asset + ",state=" + state + ",name='" + name + "',phone='" + phone + "',email='" + email + "',priority='" + priority + "',notes='" + notes + "',description='" + desc + "' WHERE tickNum=" + ticketNum;
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetAsset(int tagNum)
+        public static bool GetAsset(int tagNum)
         {
             cmd.CommandText = "SELECT * FROM assets WHERE tagNum=" + tagNum;          
             rdr = cmd.ExecuteReader();
@@ -108,19 +130,20 @@ namespace CMDB
                 Asset.upgradeDate = rdr.GetDateTime(8);
                 Asset.auditDate = rdr.GetDateTime(9);
 
-
+                rdr.Close();
+                return true;
             }
             else
-            { 
-                
+            {
+                rdr.Close();
+                return false;
             }
 
-            rdr.Close();
         }
 
-        public static void GetTicket(int tickNum)
+        public static bool GetTicket(int tickNum)
         {
-            cmd.CommandText = "SELECT * FROM tickets WHERE tagNum=" + tickNum;
+            cmd.CommandText = "SELECT * FROM tickets WHERE tickNum=" + tickNum;
             rdr = cmd.ExecuteReader();
 
             if (rdr.HasRows)
@@ -138,12 +161,42 @@ namespace CMDB
                 Ticket.asset = rdr.GetInt32(8);
                 Ticket.createdDate = rdr.GetDateTime(9);
 
+                rdr.Close();
+                return true;
             }
             else
-            { 
+            {
                 //No ticket found
+                rdr.Close();
+                return false;
             }
 
+        }
+
+        public static void GetLatestTicketNum()
+        {
+            cmd.CommandText = "SELECT MAX(tickNum) From tickets";
+            rdr = cmd.ExecuteReader();
+
+            if (rdr.HasRows)
+            {
+                rdr.Read();
+                Ticket.ticketNum = rdr.GetInt32(0);
+                rdr.Close();
+            }
+        }
+
+        public static void GetLatestAssetNum()
+        {
+            cmd.CommandText = "SELECT MAX(tagNum) From assets";
+            rdr = cmd.ExecuteReader();
+
+            if (rdr.HasRows)
+            {
+                rdr.Read();
+                Asset.tagNum = rdr.GetInt32(0);
+                rdr.Close();
+            }
         }
 
         public static void GetOpenTicketNums()
@@ -162,8 +215,55 @@ namespace CMDB
                     Asset.openTickets.Add(rdr.GetInt32(0));
                 }
             }
+            rdr.Close();
         }
 
+        public static void DeleteAsset(int tagNum)
+        {
+            cmd.CommandText = "DELETE FROM assets WHERE tagnum=" + tagNum;
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void DeleteTicket(int tickNum)
+        {
+            cmd.CommandText = "DELETE FROM tickets WHERE tickNum=" + tickNum;
+            cmd.ExecuteNonQuery();
+        }
+
+        public static List<string> GetAuditList()
+        {
+            List<string> results = new List<string>();
+
+            DateTime auditDate = DateTime.Today.AddMonths(-24);
+
+            cmd.CommandText = "SELECT tagNum FROM assets WHERE auditDate <= '" + auditDate.ToString("yyyy-MM-dd") + "'";
+            rdr = cmd.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                results.Add(rdr.GetInt32(0).ToString().PadLeft(6, '0'));
+            }
+            rdr.Close();
+            return results;
+        }
+
+        public static List<string> GetReplacementList()
+        { 
+            List<string> results = new List<string>();
+
+            DateTime replaceDate = DateTime.Today.AddMonths(-48);
+
+            cmd.CommandText = "SELECT tagNum FROM assets WHERE installDate <= '" + replaceDate.ToString("yyyy-MM-dd") + "'";
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                results.Add(rdr.GetInt32(0).ToString().PadLeft(6, '0'));
+            }
+            rdr.Close();
+            return results;
+
+        }
     }
 
 }
